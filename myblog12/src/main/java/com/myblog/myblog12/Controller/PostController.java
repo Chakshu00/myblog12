@@ -5,10 +5,9 @@ import com.myblog.myblog12.Service.PostService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Service
 @RestController
@@ -26,5 +25,23 @@ public class PostController {
 
         PostDto dto = postService.createPost(postDto);
         return new ResponseEntity<>(dto, HttpStatus.CREATED);
+    }
+    // For Exception Handling
+    //http://localhost:8080/api/post/particular?id=1
+    @GetMapping("/particular")
+    public ResponseEntity<PostDto> getPostById(@RequestParam long id){
+        PostDto dto = postService.getPostById(id);
+        return new ResponseEntity(dto,HttpStatus.OK);
+    }
+
+    //Read all data-->
+    //http://localhost:8080/api/post?pageNo=0&pageSize=5
+    @GetMapping
+    public List<PostDto> getAllPosts( //These parametes are for pagination
+            @RequestParam(name="pageNo", required =false, defaultValue="0") int pageNo,
+            @RequestParam(name="pageSize", required =false, defaultValue="3") int pageSize
+    ){
+        List<PostDto> postDtos =postService.getAllPosts(pageNo,pageSize);
+        return postDtos;
     }
 }
