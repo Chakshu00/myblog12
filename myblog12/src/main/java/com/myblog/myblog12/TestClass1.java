@@ -3,26 +3,18 @@ package com.myblog.myblog12;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 public class TestClass1 {
     public static void main(String[] args) {
-       List<Employee> employees= Arrays.asList(
-               new Employee("mike",30,"Chennai"),
-               new Employee("adam",25,"Chennai"),
-               new Employee("stallin",31,"pune"),
-               new Employee("pankaj",34,"banglore")
-       );
+       List<String> names= Arrays.asList("Akash","Ankit","Chakshu");
+        Optional<String> firstNameA = names.stream().map(i -> i.toLowerCase()).filter(i -> i.startsWith("a")).findFirst();
 
-        Map<Integer, List<Employee>> collect = employees.stream().collect(Collectors.groupingBy(e -> e.getAge()));
-       for(Map.Entry<Integer, List<Employee>>entry:collect.entrySet()){
-           int age=entry.getKey();
-           List<Employee> EmployeesWithAge = entry.getValue();
-           System.out.println("age:"+age+"----");
-           for(Employee e:EmployeesWithAge){
-               System.out.println(e.getCity());
-               System.out.println(e.getName());
-           }
-       }
+        if(firstNameA.isPresent()){
+            System.out.println(firstNameA.get());
+        }else{
+            System.out.println("No name is present with letter 'a'");
+        }
     }
 }

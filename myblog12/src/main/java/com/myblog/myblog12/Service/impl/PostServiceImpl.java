@@ -7,6 +7,7 @@ import com.myblog.myblog12.Service.PostService;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -43,8 +44,9 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAllPosts(int pageNo, int pageSize) {
-       Pageable pageable= PageRequest.of(pageNo,pageSize); //for pagination and select first "of"
+    public List<PostDto> getAllPosts(int pageNo, int pageSize, String sortBy, String sortDir) {
+       Sort sort= (sortDir.equalsIgnoreCase(Sort.Direction.ASC.name()))?Sort.by(sortBy).ascending():Sort.by(sortBy).descending();
+       Pageable pageable= PageRequest.of(pageNo,pageSize, sort); //for pagination and select  "of" with sort object
         Page<Post> pagedpost = postRepository.findAll(pageable);//select findAll which have pageable
         List<Post> posts = pagedpost.getContent();// to convert Page<Post> to List<Post>
 
